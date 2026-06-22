@@ -1,88 +1,233 @@
 <template>
-  <div class="flex items-start w-[96%] md:w-[88%] lg:w-[95%] xl:w-[97%]  h-screen bg-[#9D7133] justify-center px-4 sm:px-6 lg:px-0 py-6 sm:py-8 lg:py-12 overflow-x-hidden">
-    <div class="absolute w-full h-screen inset-0 bg-[url('../../assets/images/LEARN.jpg')] bg-cover opacity-10 z-0">
-
-    </div>
-    <div class="flex flex-col items-center w-full md:w-[100%] max-w-screen-xl 2xl:max-w-screen-2xl mx-auto gap-8 xl:gap-12 z-20">
-      
-      <!-- Header -->
-      <div
-        class="flex flex-col items-start 2xl:items-center text-center xl:text-left gap-6 xl:gap-10 mt-6 xl:mt-10 transition-all duration-500 ease-in-out"
-        data-aos="fade-up"
-      >
-       <!-- <img
-          src="../assets/images/AUI.png"
-          class="w-[140px] h-[160px] sm:w-[160px] sm:h-[180px] lg:w-[180px] lg:h-[200px] transition-all duration-500 ease-in-out"
-        /> -->
-        <div>
-          <h3
-            class="font-inknut font-bold text-2xl sm:text-4xl lg:text-[40px] xl:text-5xl 2xl:text-6xl leading-tight text-white transition-all duration-500 ease-in-out"
-          >
-            WELCOME TO LUMIERE
-          </h3>
-          <h3
-            class="font-inknut font-bold text-sm sm:text-base lg:text-lg text-white mt-3 transition-all duration-500 ease-in-out"
-          >
-            For IT Students exclusively
-          </h3>
+  <div class="min-h-screen bg-[#f4f6fb] py-6 px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto grid min-h-[calc(100vh-3rem)] w-full max-w-7xl overflow-hidden rounded-2xl border border-[#e4e8f3] bg-white shadow-xl lg:grid-cols-2">
+ 
+      <!-- Left decorative panel — unchanged -->
+      <div class="relative hidden overflow-hidden bg-gradient-to-b from-[#eef2ff] to-[#e5ebff] p-10 lg:block">
+        <div class="mb-8 flex items-center gap-3">
+          <div class="h-9 w-9 rounded-lg bg-[#2f61c7] text-white grid place-content-center text-sm font-bold">LUMIERE</div>
+          <p class="text-sm font-semibold text-[#1f2f53]">Skill Assessment &amp; Learning Platform</p>
         </div>
+        <p class="mb-5 inline-block rounded-full bg-[#dce6ff] px-3 py-1 text-xs font-medium text-[#2f61c7]">
+          Smart Assessments. Better Learning.
+        </p>
+        <h1 class="text-4xl font-bold leading-tight text-[#1c2b4a]">
+          Assess skills.<br />
+          Track progress.<br />
+          <span class="text-[#2f61c7]">Drive growth.</span>
+        </h1>
+        <p class="mt-5 max-w-md text-sm leading-6 text-[#42557d]">
+          Create assessments, manage courses, and unlock powerful insights all in one platform.
+        </p>
       </div>
-
-      <!-- Steps -->
-      <div
-        class="grid grid-cols-1 xl:grid-cols-2 mt-8 sm:mt-10 items-center justify-items-center gap-8 sm:gap-12 xl:gap-16 w-[80%] transition-all duration-500 ease-in-out"
-        data-aos="fade-up"
-      >
-        <!-- Step 1 -->
-        <div class="flex flex-col gap-6 flex-1 w-[100%] sm:w-[80%] lg:w-[95%] min-w-[200px] transition-all duration-500 ease-in-out">
-          <h3
-            class="text-white hidden xl:flex font-inknut text-sm sm:text-base lg:text-lg font-medium leading-snug capitalize hover:underline transition-all duration-500 ease-in-out"
-          >
-            STEP 1.<br />
-            Sign Up by filling out <br />
-            this form
-          </h3>
-
-          <h3
-            class="text-white flex xl:hidden font-inknut text-sm sm:text-base lg:text-lg font-medium leading-snug capitalize hover:underline transition-all duration-500 ease-in-out"
-          >
-            STEP 1.<br />
-            Sign Up by filling out this form
-          </h3>
-
-          <SignUpForm/>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="flex flex-col gap-6 flex-1 w-[100%] sm:w-[80%]  lg:w-[95%] transition-all duration-500 ease-in-out">
-          <h3
-            class="text-white font-inknut text-sm sm:text-base lg:text-lg font-medium leading-snug capitalize hover:underline transition-all duration-500 ease-in-out"
-          >
-            STEP 2.<br />
-            Take a picture of the <br />
-            front side of your Id card
-          </h3>
-          <div
-            class="bg-[#50b0ff] hover:bg-[#2e6592] h-[220px] sm:h-[280px] md:h-[320px] lg:h-[360px] w-full rounded-[30px] sm:rounded-[40px] lg:rounded-[50px] flex items-center justify-center shadow-lg transition-all duration-500 ease-in-out"
-          >
-            <img
-              src="../assets/icons/icons8-camera-100.png"
-              class="w-[60px] sm:w-[80px] hover:scale-[120%] md:w-[90px] lg:w-[100px] max-w-full object-contain transition-all duration-500 ease-in-out"
-            />
+ 
+      <!-- Right panel -->
+      <div class="flex items-center justify-center p-6 sm:p-10">
+ 
+        <!-- STEP 1: Registration form -->
+        <form v-if="step === 1" class="w-full max-w-md space-y-5" @submit.prevent="sendCode">
+          <div class="text-right text-sm text-[#4f5f81]">
+            Already have an account?
+            <button type="button" class="font-semibold text-[#2f61c7] hover:underline" @click="goToLogin">Sign in</button>
           </div>
-        </div>
+ 
+          <div>
+            <h2 class="text-3xl font-bold text-[#1c2b4a]">Create Your Account</h2>
+            <p class="mt-1 text-sm text-[#5a6b8f]">Join the platform and get started in minutes.</p>
+          </div>
+ 
+          <div class="space-y-4">
+            <input v-model="form.fullName" type="text" placeholder="Full Name"
+              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
+ 
+            <input v-model="form.email" type="email" placeholder="Email Address"
+              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
+ 
+            <div ref="departmentDropdownRef" class="relative">
+              <button type="button"
+                class="flex w-full items-center justify-between rounded-lg border border-[#dbe2f1] bg-white px-4 py-3 text-left text-sm outline-none transition focus:border-[#2f61c7]"
+                :class="form.department ? 'text-[#1f2f53]' : 'text-[#8a96b5]'"
+                @click.stop="departmentOpen = !departmentOpen">
+                <span>{{ form.department || 'Select department' }}</span>
+                <svg class="h-4 w-4 shrink-0 text-[#5a6b8f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <ul v-show="departmentOpen"
+                class="absolute left-0 right-0 z-20 mt-1 max-h-48 overflow-auto rounded-lg border border-[#dbe2f1] bg-white py-1 shadow-lg">
+                <li v-for="dept in departmentOptions" :key="dept"
+                  class="cursor-pointer px-4 py-2.5 text-sm text-[#1f2f53] transition hover:bg-[#eef2ff]"
+                  :class="{ 'bg-[#eef2ff] font-medium text-[#2f61c7]': form.department === dept }"
+                  @click="selectDepartment(dept)">
+                  {{ dept }}
+                </li>
+              </ul>
+            </div>
+ 
+            <input v-model="form.password" type="password" placeholder="Password"
+              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
+ 
+            <input v-model="form.confirmPassword" type="password" placeholder="Confirm Password"
+              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
+ 
+            <input v-model="form.organization" type="text" placeholder="Organization / Institution (Optional)"
+              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
+          </div>
+ 
+          <label class="flex items-start gap-2 text-xs text-[#5a6b8f]">
+            <input v-model="form.agreed" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-[#c8d3eb] text-[#2f61c7]" />
+            <span>I agree to the Terms of Service and Privacy Policy</span>
+          </label>
+ 
+          <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
+ 
+          <button type="submit"
+            class="w-full rounded-lg bg-[#2f61c7] py-3 text-sm font-semibold text-white transition hover:bg-[#254ea2] disabled:cursor-not-allowed disabled:opacity-60"
+            :disabled="!isFormValid || loading">
+            {{ loading ? 'Sending code...' : 'Send Code' }}
+          </button>
+        </form>
+ 
+        <!-- STEP 2: Enter verification code -->
+        <form v-else-if="step === 2" class="w-full max-w-md space-y-5" @submit.prevent="completeRegistration">
+          <div>
+            <h2 class="text-3xl font-bold text-[#1c2b4a]">Check Your Email</h2>
+            <p class="mt-1 text-sm text-[#5a6b8f]">
+              We sent a 6-digit verification code to <strong>{{ form.email }}</strong>.
+              It expires in 10 minutes.
+            </p>
+          </div>
+ 
+          <input v-model="form.verificationCode" type="text" placeholder="Enter 6-digit code"
+            maxlength="6"
+            class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7] tracking-widest text-center text-lg" />
+ 
+          <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
+ 
+          <button type="submit"
+            class="w-full rounded-lg bg-[#2f61c7] py-3 text-sm font-semibold text-white transition hover:bg-[#254ea2] disabled:cursor-not-allowed disabled:opacity-60"
+            :disabled="loading || !form.verificationCode">
+            {{ loading ? 'Verifying...' : 'Verify & Create Account' }}
+          </button>
+ 
+          <p class="text-center text-sm text-[#5a6b8f]">
+            Didn't receive the code?
+            <button type="button" class="font-semibold text-[#2f61c7] hover:underline" @click="sendCode">
+              Resend
+            </button>
+          </p>
+ 
+          <button type="button" class="w-full text-sm text-[#5a6b8f] hover:underline text-center" @click="step = 1">
+            ← Go back
+          </button>
+        </form>
+ 
       </div>
     </div>
   </div>
 </template>
-
+ 
 <script setup lang="ts">
-import { ref } from "vue";
-import SignUpForm from "../components/SignUpForm.vue";
-
-const fullName = ref("");
-const matricNumber = ref("");
-const email = ref("");
-const password = ref("");
-const confirmPassword = ref("");
+definePageMeta({ layout: false })
+ 
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+ 
+const { setAuth, apiCall } = useAuth()
+ 
+const step    = ref(1)
+const loading = ref(false)
+const error   = ref('')
+ 
+const form = reactive({
+  fullName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  department: '',
+  organization: '',
+  agreed: false,
+  verificationCode: ''
+})
+ 
+const departmentOptions = [
+  'Computer Science',
+  'Software Engineering',
+  'CyberSecurity',
+  'Information Technology',
+]
+ 
+const departmentOpen        = ref(false)
+const departmentDropdownRef = ref<HTMLElement | null>(null)
+ 
+const selectDepartment = (dept: string) => {
+  form.department      = dept
+  departmentOpen.value = false
+}
+ 
+const closeDepartmentDropdown = (e: MouseEvent) => {
+  if (departmentDropdownRef.value && !departmentDropdownRef.value.contains(e.target as Node)) {
+    departmentOpen.value = false
+  }
+}
+ 
+onMounted(() => document.addEventListener('click', closeDepartmentDropdown))
+onUnmounted(() => document.removeEventListener('click', closeDepartmentDropdown))
+ 
+const isFormValid = computed(() =>
+  form.fullName.trim() &&
+  form.email.trim() &&
+  form.department.trim() &&
+  form.password.trim() &&
+  form.confirmPassword.trim() &&
+  form.password === form.confirmPassword &&
+  form.password.length >= 8 &&
+  form.agreed
+)
+ 
+// ── STEP 1: Call backend to send code ─────────────────────────────────────
+const sendCode = async () => {
+  error.value = ''
+  loading.value = true
+  try {
+    await apiCall('/api/auth/send-code/', {
+      method: 'POST',
+      body: { email: form.email }
+    })
+    step.value = 2
+  } catch (err: any) {
+    error.value = err?.data?.error || 'Failed to send code. Please try again.'
+  } finally {
+    loading.value = false
+  }
+}
+ 
+// ── STEP 2: Verify code and register ─────────────────────────────────────
+const completeRegistration = async () => {
+  error.value = ''
+  if (!form.verificationCode || form.verificationCode.length < 6) {
+    error.value = 'Please enter the full 6-digit code.'
+    return
+  }
+  loading.value = true
+  try {
+    const data = await apiCall('/api/auth/register/', {
+      method: 'POST',
+      body: {
+        full_name:  form.fullName,
+        email:      form.email,
+        department: form.department,
+        password:   form.password,
+        code:       form.verificationCode
+      }
+    })
+    setAuth(data)          // saves JWT token to localStorage
+    navigateTo('/dashboard')
+  } catch (err: any) {
+    error.value = err?.data?.error || 'Verification failed. Please check the code.'
+  } finally {
+    loading.value = false
+  }
+}
+ 
+const goToLogin = () => navigateTo('/login')
 </script>

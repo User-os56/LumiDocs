@@ -13,7 +13,7 @@
       <div class="flex flex-col gap-2 text-center">
         <h1 class="text-3xl sm:text-4xl font-bold text-[#1c2b4a]">Skill Assessment</h1>
         <p class="text-base sm:text-lg text-[#4c6087]">
-          Tell us about your course of study or field of interest so we can customize the assessment to match your goals and aspirations.
+          Tell us about your field of interest so we can customize the assessment to match your goals.
         </p>
       </div>
 
@@ -32,42 +32,51 @@
 
           <!-- Form -->
           <div class="md:col-span-3 space-y-6">
-            <div class="space-y-2">
+            <div class="space-y-4">
               <h2 class="text-2xl sm:text-[26px] font-semibold text-[#1c2b4a]">
-                What is your current course of study or desired field?
+                What is your desired field?
               </h2>
-              <div>
-                <SelectModal
-  v-model="selectedField"
-  :options="fieldOptions"
-  placeholder="Select your field..."
-/>
 
+              <!-- Field selector -->
+              <SelectModal
+                v-model="selectedField"
+                :options="fieldOptions"
+                placeholder="Select your field..."
+              />
+
+              <!-- Proficiency level -->
+              <div class="space-y-2">
+                <label class="text-sm font-medium text-[#4c6087]">Your current level in this field</label>
+                <div class="grid grid-cols-3 gap-3">
+                  <button
+                    v-for="level in levels"
+                    :key="level"
+                    class="rounded-xl border py-2.5 text-sm font-semibold transition"
+                    :class="selectedLevel === level
+                      ? 'bg-[#2f61c7] text-white border-[#2f61c7]'
+                      : 'bg-white text-[#2d4570] border-[#d3defa] hover:border-[#9fb6ec]'"
+                    @click="selectedLevel = level"
+                  >
+                    {{ level }}
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div class="flex flex-col gap-4">
-              <div class="flex items-center justify-center gap-2 text-xs text-[#7b8fb6]">
-                <span class="h-2 w-2 rounded-full bg-[#2f61c7]"></span>
-                <span class="h-2 w-2 rounded-full bg-[#9fb6ec]"></span>
-                <span class="h-2 w-2 rounded-full bg-[#c7d4f5]"></span>
-                <span class="h-2 w-2 rounded-full bg-[#dfe7fb]"></span>
-              </div>
-              <div class="flex items-center justify-end gap-3">
-                <button
-                  class="rounded-xl bg-white border border-[#d3defa] text-[#2d4570] px-5 py-2.5 text-sm font-semibold shadow hover:border-[#9fb6ec] transition"
-                  @click="handleCancel"
-                >
-                  Cancel
-                </button>
-                <button
-                  class="rounded-xl bg-[#2f61c7] text-white px-5 py-2.5 text-sm font-semibold shadow-lg shadow-[#2f61c7]/30 hover:bg-[#274fa3] transition disabled:opacity-60 disabled:cursor-not-allowed"
-                  :disabled="!selectedField"
-                  @click="handleStart"
-                >
-                  Start Assessment
-                </button>
-              </div>
+            <div class="flex items-center justify-end gap-3">
+              <button
+                class="rounded-xl bg-white border border-[#d3defa] text-[#2d4570] px-5 py-2.5 text-sm font-semibold shadow hover:border-[#9fb6ec] transition"
+                @click="handleCancel"
+              >
+                Cancel
+              </button>
+              <button
+                class="rounded-xl bg-[#2f61c7] text-white px-5 py-2.5 text-sm font-semibold shadow-lg shadow-[#2f61c7]/30 hover:bg-[#274fa3] transition disabled:opacity-60 disabled:cursor-not-allowed"
+                :disabled="!selectedField || !selectedLevel"
+                @click="handleStart"
+              >
+                Start Assessment
+              </button>
             </div>
           </div>
         </div>
@@ -77,34 +86,48 @@
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "auth",
-});
-import { ref, computed } from "vue";
-import { useRouter } from "#app";
+definePageMeta({ layout: "auth" })
 
-const router = useRouter();
+import { ref, computed } from "vue"
+import { useRouter } from "#app"
+
+const router = useRouter()
+
 const fields = [
-  "Computer Science",
-  "Information Technology",
-  "Software Engineering",
-  "Cyber Security",
-];
+  "AI Engineer",
+  "Full Stack Developer",
+  "Cybersecurity Analyst",
+  "Cloud Engineer",
+  "DevOps Engineer",
+  "Data Scientist",
+  "Backend Developer",
+  "Machine Learning Engineer",
+  "Mobile Developer",
+  "UI/UX Designer",
+  "Front End Developer",
+  "Data Analyst"
+]
+
+const levels = ["Beginner", "Intermediate", "Expert"]
 
 const fieldOptions = computed(() =>
-  fields.map((field) => ({
-    label: field,
-    value: field,
-  }))
-);
-const selectedField = ref("");
+  fields.map(f => ({ label: f, value: f }))
+)
 
-const handleCancel = () => {
-  router.back();
-};
+const selectedField = ref("")
+const selectedLevel = ref("Beginner")
+
+const handleCancel = () => router.back()
 
 const handleStart = () => {
-  if (!selectedField.value) return;
-  router.push("/assessments/tests");
-};
+  if (!selectedField.value || !selectedLevel.value) return
+
+  // Save to localStorage so the test page and dashboard can read them
+  if (import.meta.client) {
+    localStorage.setItem('expertise_field', selectedField.value)
+    localStorage.setItem('entry_level', selectedLevel.value)
+  }
+
+  router.push("/assessments/tests")
+}
 </script>

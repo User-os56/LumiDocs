@@ -4,7 +4,7 @@
         <!-- 1 -->
         <div class=" flex mt-[0px]" data-aos="fade-in">
             <img
-            src="../../assets/images/votetech.png"
+            src="../../assets/images/Project logo.png"
             class="w-[312px] h-[312px]"
             loading="lazy"
             />
@@ -79,10 +79,10 @@
         >
         <nuxt-link @click="closeDrawer" class="" to="/">
           <img
-          src="../assets/images/votetech.png"
+          src="../assets/images/Project logo.png"
           class="w-[87.4px]"
           alt="Vote Tech logo"
-          width="88px"
+          width="98px"
           height="40px"
           loading="lazy"
           />

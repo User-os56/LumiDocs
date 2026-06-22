@@ -61,7 +61,7 @@ const navLinks = [
   { label: "Dashboard", to: "/dashboard" },
   { label: "Assessments", to: "/assessments/onboarding" },
   { label: "Recommendations", to: "/recommendations" },
-  { label: "Admin", to: "/admin" },
+  { label: "Profile", to: "/profile"},
 ];
 
 const isActive = (to: string) => {
