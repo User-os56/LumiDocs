@@ -95,7 +95,6 @@ const router = useRouter()
 
 const fields = [
   "AI Engineer",
-  "Full Stack Developer",
   "Cybersecurity Analyst",
   "Cloud Engineer",
   "DevOps Engineer",
