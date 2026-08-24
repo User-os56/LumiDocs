@@ -45,10 +45,8 @@ export const useAuth = () => {
     const baseUrl = config.public.apiBase || 'http://127.0.0.1:8000'
     const fullUrl = `${baseUrl}${url}`
 
-    // Always read token fresh from localStorage
     const authToken = getToken()
 
-    // Public endpoints that don't need a token
     const publicEndpoints = [
       '/api/auth/send-code/',
       '/api/auth/register/',
@@ -63,9 +61,17 @@ export const useAuth = () => {
       throw { status: 401, data: { error: 'Not authenticated' }, message: 'Not authenticated' }
     }
 
+const isFormData =
+  typeof FormData !== 'undefined' &&
+  options.body instanceof FormData
+  
     const headers = {
-      'Content-Type': 'application/json',
       ...options.headers,
+    }
+
+    // Only set Content-Type to JSON if body is NOT FormData
+    if (!isFormData) {
+      headers['Content-Type'] = 'application/json'
     }
 
     // Add Authorization header for protected endpoints
@@ -73,11 +79,17 @@ export const useAuth = () => {
       headers['Authorization'] = `Bearer ${authToken}`
     }
 
+    // Format body depending on whether it's FormData or regular object
+    let body = options.body
+    if (body && !isFormData && typeof body === 'object') {
+      body = JSON.stringify(body)
+    }
+
     try {
       const response = await fetch(fullUrl, {
         method: options.method || 'GET',
         headers,
-        body: options.body ? JSON.stringify(options.body) : undefined,
+        body,
       })
 
       if (!response.ok) {

@@ -1,190 +1,169 @@
 <template>
-  <div class="min-h-screen bg-[#f4f6fb] py-6 px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto grid min-h-[calc(100vh-3rem)] w-full max-w-7xl overflow-hidden rounded-2xl border border-[#e4e8f3] bg-white shadow-xl lg:grid-cols-2">
- 
-      <!-- Left decorative panel — unchanged -->
-      <div class="relative hidden overflow-hidden bg-gradient-to-b from-[#eef2ff] to-[#e5ebff] p-10 lg:block">
-        <div class="mb-8 flex items-center gap-3">
-          <div class="h-9 w-9 rounded-lg bg-[#2f61c7] text-white grid place-content-center text-sm font-bold">LUMIERE</div>
-          <p class="text-sm font-semibold text-[#1f2f53]">Skill Assessment &amp; Learning Platform</p>
-        </div>
-        <p class="mb-5 inline-block rounded-full bg-[#dce6ff] px-3 py-1 text-xs font-medium text-[#2f61c7]">
-          Smart Assessments. Better Learning.
-        </p>
-        <h1 class="text-4xl font-bold leading-tight text-[#1c2b4a]">
-          Assess skills.<br />
-          Track progress.<br />
-          <span class="text-[#2f61c7]">Drive growth.</span>
-        </h1>
-        <p class="mt-5 max-w-md text-sm leading-6 text-[#42557d]">
-          Create assessments, manage courses, and unlock powerful insights all in one platform.
-        </p>
-      </div>
- 
-      <!-- Right panel -->
-      <div class="flex items-center justify-center p-6 sm:p-10">
- 
-        <!-- STEP 1: Registration form -->
-        <form v-if="step === 1" class="w-full max-w-md space-y-5" @submit.prevent="sendCode">
-          <div class="text-right text-sm text-[#4f5f81]">
-            Already have an account?
-            <button type="button" class="font-semibold text-[#2f61c7] hover:underline" @click="goToLogin">Sign in</button>
-          </div>
- 
-          <div>
-            <h2 class="text-3xl font-bold text-[#1c2b4a]">Create Your Account</h2>
-            <p class="mt-1 text-sm text-[#5a6b8f]">Join the platform and get started in minutes.</p>
-          </div>
- 
-          <div class="space-y-4">
-            <input v-model="form.fullName" type="text" placeholder="Full Name"
-              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
- 
-            <input v-model="form.email" type="email" placeholder="Email Address"
-              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
- 
-            <div ref="departmentDropdownRef" class="relative">
-              <button type="button"
-                class="flex w-full items-center justify-between rounded-lg border border-[#dbe2f1] bg-white px-4 py-3 text-left text-sm outline-none transition focus:border-[#2f61c7]"
-                :class="form.department ? 'text-[#1f2f53]' : 'text-[#8a96b5]'"
-                @click.stop="departmentOpen = !departmentOpen">
-                <span>{{ form.department || 'Select department' }}</span>
-                <svg class="h-4 w-4 shrink-0 text-[#5a6b8f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <ul v-show="departmentOpen"
-                class="absolute left-0 right-0 z-20 mt-1 max-h-48 overflow-auto rounded-lg border border-[#dbe2f1] bg-white py-1 shadow-lg">
-                <li v-for="dept in departmentOptions" :key="dept"
-                  class="cursor-pointer px-4 py-2.5 text-sm text-[#1f2f53] transition hover:bg-[#eef2ff]"
-                  :class="{ 'bg-[#eef2ff] font-medium text-[#2f61c7]': form.department === dept }"
-                  @click="selectDepartment(dept)">
-                  {{ dept }}
-                </li>
-              </ul>
+  <div class="min-h-screen bg-slate-950 py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-center font-sans text-slate-100">
+    <div class="mx-auto grid min-h-[calc(100vh-3rem)] w-full max-w-6xl overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-md shadow-2xl lg:grid-cols-2">
+
+      <!-- Left Decorative Panel -->
+      <div class="relative hidden overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-10 lg:flex lg:flex-col lg:justify-between border-r border-slate-800">
+        <!-- Glowing Ambient Lights -->
+        <div class="absolute -top-24 -left-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div>
+          <!-- Brand Badge -->
+          <div class="mb-8 flex items-center gap-3">
+            <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 text-slate-950 grid place-content-center text-xs font-black shadow-lg shadow-amber-500/20">
+              LM
             </div>
- 
-            <input v-model="form.password" type="password" placeholder="Password"
-              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
- 
-            <input v-model="form.confirmPassword" type="password" placeholder="Confirm Password"
-              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
- 
-            <input v-model="form.organization" type="text" placeholder="Organization / Institution (Optional)"
-              class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7]" />
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400">AI Quiz Intelligence</p>
           </div>
- 
-          <label class="flex items-start gap-2 text-xs text-[#5a6b8f]">
-            <input v-model="form.agreed" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-[#c8d3eb] text-[#2f61c7]" />
+
+          <p class="mb-6 inline-block rounded-full bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 text-xs font-semibold text-amber-400">
+            Document-Driven Assessments
+          </p>
+
+          <h1 class="text-4xl font-extrabold leading-tight text-white tracking-tight">
+            Upload slides.<br />
+            Generate tests.<br />
+            <span class="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">Master any subject.</span>
+          </h1>
+
+          <p class="mt-6 max-w-md text-sm leading-relaxed text-slate-400">
+            Turn lecture slides, PDFs, and notes into instant multiple-choice assessments using Groq AI.
+          </p>
+        </div>
+
+        <div class="text-xs text-slate-500">
+          Powered by LUMIERE AI Engine
+        </div>
+      </div>
+
+      <!-- Right Panel: Auth Forms -->
+      <div class="flex items-center justify-center p-6 sm:p-10 bg-slate-950/40">
+
+        <!-- STEP 1: Registration Form -->
+        <form v-if="step === 1" class="w-full max-w-md space-y-5" @submit.prevent="sendCode">
+          <div class="text-right text-xs text-slate-400">
+            Already have an account?
+            <button type="button" class="font-bold text-amber-400 hover:underline ml-1" @click="goToLogin">Sign in</button>
+          </div>
+
+          <div>
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Create Your Account</h2>
+            <p class="mt-1 text-xs text-slate-400">Get started with automated AI study prep in seconds.</p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+              <input v-model="form.fullName" type="text" placeholder="John Doe"
+                class="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+              <input v-model="form.email" type="email" placeholder="name@domain.com"
+                class="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+              <input v-model="form.password" type="password" placeholder="At least 8 characters"
+                class="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Confirm Password</label>
+              <input v-model="form.confirmPassword" type="password" placeholder="Re-enter password"
+                class="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50" />
+            </div>
+          </div>
+
+          <label class="flex items-start gap-2.5 text-xs text-slate-400 cursor-pointer">
+            <input v-model="form.agreed" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-slate-800 bg-slate-900 text-amber-500 focus:ring-amber-500/20" />
             <span>I agree to the Terms of Service and Privacy Policy</span>
           </label>
- 
-          <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
- 
+
+          <p v-if="error" class="text-rose-400 text-xs text-center font-medium bg-rose-500/10 border border-rose-500/20 py-2 rounded-lg">{{ error }}</p>
+
           <button type="submit"
-            class="w-full rounded-lg bg-[#2f61c7] py-3 text-sm font-semibold text-white transition hover:bg-[#254ea2] disabled:cursor-not-allowed disabled:opacity-60"
+            class="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 py-3 text-xs font-bold text-slate-950 transition-all shadow-lg shadow-amber-500/10 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             :disabled="!isFormValid || loading">
-            {{ loading ? 'Sending code...' : 'Send Code' }}
+            {{ loading ? 'Sending code...' : 'Send Verification Code' }}
           </button>
         </form>
- 
-        <!-- STEP 2: Enter verification code -->
+
+        <!-- STEP 2: Verification Code -->
         <form v-else-if="step === 2" class="w-full max-w-md space-y-5" @submit.prevent="completeRegistration">
           <div>
-            <h2 class="text-3xl font-bold text-[#1c2b4a]">Check Your Email</h2>
-            <p class="mt-1 text-sm text-[#5a6b8f]">
-              We sent a 6-digit verification code to <strong>{{ form.email }}</strong>.
-              It expires in 10 minutes.
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Check Your Email</h2>
+            <p class="mt-1 text-xs text-slate-400 leading-relaxed">
+              We sent a 6-digit verification code to <strong class="text-amber-400 font-semibold">{{ form.email }}</strong>.
             </p>
           </div>
- 
-          <input v-model="form.verificationCode" type="text" placeholder="Enter 6-digit code"
-            maxlength="6"
-            class="w-full rounded-lg border border-[#dbe2f1] px-4 py-3 text-sm outline-none transition focus:border-[#2f61c7] tracking-widest text-center text-lg" />
- 
-          <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
- 
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-2 text-center">Verification Code</label>
+            <input v-model="form.verificationCode" type="text" placeholder="000000"
+              maxlength="6"
+              class="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3.5 text-slate-100 outline-none transition focus:border-amber-500/50 tracking-widest text-center text-xl font-mono" />
+          </div>
+
+          <p v-if="error" class="text-rose-400 text-xs text-center font-medium bg-rose-500/10 border border-rose-500/20 py-2 rounded-lg">{{ error }}</p>
+
           <button type="submit"
-            class="w-full rounded-lg bg-[#2f61c7] py-3 text-sm font-semibold text-white transition hover:bg-[#254ea2] disabled:cursor-not-allowed disabled:opacity-60"
-            :disabled="loading || !form.verificationCode">
+            class="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 py-3 text-xs font-bold text-slate-950 transition-all shadow-lg shadow-amber-500/10 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+            :disabled="loading || form.verificationCode.length < 6">
             {{ loading ? 'Verifying...' : 'Verify & Create Account' }}
           </button>
- 
-          <p class="text-center text-sm text-[#5a6b8f]">
+
+          <p class="text-center text-xs text-slate-400">
             Didn't receive the code?
-            <button type="button" class="font-semibold text-[#2f61c7] hover:underline" @click="sendCode">
+            <button type="button" class="font-bold text-amber-400 hover:underline ml-1" @click="sendCode">
               Resend
             </button>
           </p>
- 
-          <button type="button" class="w-full text-sm text-[#5a6b8f] hover:underline text-center" @click="step = 1">
-            ← Go back
+
+          <button type="button" class="w-full text-xs text-slate-500 hover:text-slate-300 transition-colors text-center" @click="step = 1">
+            ← Edit Registration Details
           </button>
         </form>
- 
+
       </div>
     </div>
   </div>
 </template>
- 
+
 <script setup lang="ts">
 definePageMeta({ layout: false })
- 
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
- 
+
+import { computed, reactive, ref } from 'vue'
+
 const { setAuth, apiCall } = useAuth()
- 
+
 const step    = ref(1)
 const loading = ref(false)
 const error   = ref('')
- 
+
 const form = reactive({
   fullName: '',
   email: '',
   password: '',
   confirmPassword: '',
-  department: '',
-  organization: '',
   agreed: false,
   verificationCode: ''
 })
- 
-const departmentOptions = [
-  'Computer Science',
-  'Software Engineering',
-  'CyberSecurity',
-  'Information Technology',
-]
- 
-const departmentOpen        = ref(false)
-const departmentDropdownRef = ref<HTMLElement | null>(null)
- 
-const selectDepartment = (dept: string) => {
-  form.department      = dept
-  departmentOpen.value = false
-}
- 
-const closeDepartmentDropdown = (e: MouseEvent) => {
-  if (departmentDropdownRef.value && !departmentDropdownRef.value.contains(e.target as Node)) {
-    departmentOpen.value = false
-  }
-}
- 
-onMounted(() => document.addEventListener('click', closeDepartmentDropdown))
-onUnmounted(() => document.removeEventListener('click', closeDepartmentDropdown))
- 
+
 const isFormValid = computed(() =>
   form.fullName.trim() &&
   form.email.trim() &&
-  form.department.trim() &&
   form.password.trim() &&
   form.confirmPassword.trim() &&
   form.password === form.confirmPassword &&
   form.password.length >= 8 &&
   form.agreed
 )
- 
-// ── STEP 1: Call backend to send code ─────────────────────────────────────
+
+// STEP 1: Send verification code
 const sendCode = async () => {
   error.value = ''
   loading.value = true
@@ -200,8 +179,8 @@ const sendCode = async () => {
     loading.value = false
   }
 }
- 
-// ── STEP 2: Verify code and register ─────────────────────────────────────
+
+// STEP 2: Verify code and register
 const completeRegistration = async () => {
   error.value = ''
   if (!form.verificationCode || form.verificationCode.length < 6) {
@@ -213,14 +192,13 @@ const completeRegistration = async () => {
     const data = await apiCall('/api/auth/register/', {
       method: 'POST',
       body: {
-        full_name:  form.fullName,
-        email:      form.email,
-        department: form.department,
-        password:   form.password,
-        code:       form.verificationCode
+        full_name: form.fullName,
+        email:     form.email,
+        password:  form.password,
+        code:      form.verificationCode
       }
     })
-    setAuth(data)          // saves JWT token to localStorage
+    setAuth(data)
     navigateTo('/dashboard')
   } catch (err: any) {
     error.value = err?.data?.error || 'Verification failed. Please check the code.'
@@ -228,6 +206,6 @@ const completeRegistration = async () => {
     loading.value = false
   }
 }
- 
+
 const goToLogin = () => navigateTo('/login')
 </script>
