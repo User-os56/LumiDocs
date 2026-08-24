@@ -4,7 +4,7 @@
     <AuthNavBar />
 
     <!-- Page Content — pb-16 prevents bottom nav overlapping content on mobile -->
-    <main class="flex-1 p-6 pb-20 sm:pb-6">
+    <main class="flex-1 pb-20 sm:pb-6">
       <slot />
     </main>
 

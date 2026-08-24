@@ -21,7 +21,7 @@
           </div>
           <div>
             <h1 class="text-2xl sm:text-3xl font-bold text-[#1c2b4a]">Assessment Complete</h1>
-            <p class="text-sm text-[#4c6087]">{{ result.field || 'Skill Assessment' }} — {{ result.date || 'Today' }}</p>
+            <p class="text-sm text-[#4c6087]">{{  ' Assessment' }} — {{ result.date || 'Today' }}</p>
           </div>
         </div>
 
@@ -95,7 +95,6 @@ const result = ref({
   total: 0,
   score_percent: 0,
   elapsed: 0,
-  field: '',
   level: '',
   date: '',
 })
@@ -161,16 +160,13 @@ const bandClass = computed(() => {
 
 const bandMessage = computed(() => {
   const s = numericScore.value
-  const field = result.value.field || 'this field'
-  if (s >= 70) return `Strong performance in ${field}. Check your recommendations to go further.`
-  if (s >= 50) return `You have a foundational grasp of ${field}. Focused study will close the gap.`
-  return `More practice needed in ${field}. Your personalised recommendations will help you build up.`
-})
+  if (s >= 70) return 'You have a strong grasp of the material. Keep up the good work!'
+  if (s >= 50) return 'You have a fair understanding, but there is room for improvement. Consider reviewing the material and retaking the assessment.'
+  return 'You may need to review the material more thoroughly. Consider studying and retaking the assessment to improve your understanding.'})
 
 // ── Navigation ────────────────────────────────────────────────────────────
 const goHome = () => router.push("/dashboard")
 
-// Retake goes to onboarding so the user picks field/level fresh
 // and the backend session gets properly reset
 const retake = () => router.push("/assessments/onboarding")
 </script>
